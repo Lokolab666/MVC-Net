@@ -1,0 +1,116 @@
+﻿
+@model PaginatedList<MvcCrud.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h2>Lista de Usuarios</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <a asp-action="Create" class="btn btn-primary">Nuevo Usuario</a>
+        </div>
+        <div class="col">
+            <form asp-controller="Usuarios" asp-action="Index">
+                <p>
+                    <span class="icon-input-btn">
+                    <input type="text" name="SearchString" />
+                    <button  type="submit" class="btn btn-success">Buscar
+                        <i class="fa fa-search"></i> 
+                    </button>
+                    <a asp-action="Index" class="btn btn-warning">Listar</a>
+                    </span>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+    
+
+
+<table class="table table-light">
+    <thead>
+        <tr>
+            <th align="center">
+                Id
+            </th>
+            <th align="center">
+                @Html.ActionLink("Nombre", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th align="center">
+                @Html.ActionLink("Apellidos", "Index", new { sortOrder = ViewBag.LastNameSortParm })
+            </th>
+            <th align="center">
+                Correo
+            </th>
+            <th align="center">
+                Contraseña
+            </th>
+            <th align="center">
+                Tipo de Usuario
+            </th>
+            <th align="center" class="text-center">Editar</th>
+            <th align="center" class="text-center">Ver</th>
+            <th align="center" class="text-center">Eliminar</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Clave)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoUsuario)
+            </td>
+            <td align="center">
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+            </td>
+            <td align="center">
+                <a asp-action="Details" class="btn btn-success" asp-route-id="@item.Id"><i class="fa fa-eye"></i></a>
+            </td>
+            <td align="center">
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Anterior
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Siguiente
+</a>
